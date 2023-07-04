@@ -15,7 +15,13 @@
 package com.example.mapwithmarker;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,8 +37,8 @@ import java.util.zip.Inflater;
  */
 // [START maps_marker_on_map_ready]
 public class MapsMarkerActivity extends AppCompatActivity
-        implements OnMapReadyCallback {
-
+        implements OnMapReadyCallback, View.OnClickListener{
+    private Button button1, button2, button3;
     // [START_EXCLUDE]
     // [START maps_marker_get_map_async]
     @Override
@@ -41,12 +47,20 @@ public class MapsMarkerActivity extends AppCompatActivity
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_maps);
 
+
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+
+        button1.setOnClickListener(this);
+        button2.setOnClickListener(this);
+        button3.setOnClickListener(this);
         // Get the SupportMapFragment and request notification when the map is ready to be used.
 
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
     }
     // [END maps_marker_get_map_async]
     // [END_EXCLUDE]
@@ -78,5 +92,33 @@ public class MapsMarkerActivity extends AppCompatActivity
         // [END_EXCLUDE]
     }
     // [END maps_marker_on_map_ready_add_marker]
+
+    @Override
+    public void onClick(View v) {
+        Fragment fragment;
+
+        switch (v.getId()) {
+            case R.id.button1:
+                fragment = new Fragment1();
+                loadFragment(fragment);
+                break;
+//            case R.id.button2:
+//                fragment = new Fragment2();
+//                loadFragment(fragment);
+//                break;
+//            case R.id.button3:
+//                fragment = new Fragment3();
+//                loadFragment(fragment);
+//                break;
+        }
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 }
 // [END maps_marker_on_map_ready]
